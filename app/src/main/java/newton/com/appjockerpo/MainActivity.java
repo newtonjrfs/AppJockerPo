@@ -1,5 +1,6 @@
 package newton.com.appjockerpo;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,10 +23,14 @@ public class MainActivity extends AppCompatActivity {
 
     int jogada1=0;
 
+    MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mediaPlayer = MediaPlayer.create(this,R.raw.musica);
 
         jogador1 = findViewById(R.id.jogador1);
         jogador2 = findViewById(R.id.jogador2);
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 jogador1.setScaleX(-1f);
+                tocaSom();
                 jogador1.setImageResource(R.drawable.pedra);
                 jogada1 =1;
                 sorteiaJogada();
@@ -50,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 jogador1.setScaleX(-1f);
+                tocaSom();
                 jogador1.setImageResource(R.drawable.papel);
                 jogada1 =2;
                 sorteiaJogada();
@@ -60,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 jogador1.setScaleX(-1f);
+                tocaSom();
                 jogador1.setImageResource(R.drawable.tesoura);
                 jogada1 =3;
                 sorteiaJogada();
@@ -105,6 +113,12 @@ public class MainActivity extends AppCompatActivity {
 
         if ( num==1 && jogada1==3 ||num==2 && jogada1==1 || num==3 && jogada1==2){
             Toast.makeText(this, "Derrota !!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void tocaSom(){
+        if (mediaPlayer!=null){
+            mediaPlayer.start();
         }
     }
 
