@@ -7,6 +7,9 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,8 +20,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton botaoTesoura;
     ImageButton botaoPapel;
 
-    Animation some;
-    Animation aparece;
+    int jogada1=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,47 +34,6 @@ public class MainActivity extends AppCompatActivity {
         botaoTesoura = findViewById(R.id.botaoTesoura);
         botaoPedra = findViewById(R.id.botaoPedra);
 
-        some = new AlphaAnimation(1,0);
-        aparece = new AlphaAnimation(0,1);
-
-        some.setDuration(1500);
-        aparece.setDuration(200);
-
-        some.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                jogador2.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                jogador2.setVisibility(View.INVISIBLE   );
-                jogador2.startAnimation(aparece);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        aparece.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                jogador2.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                jogador2.setVisibility(View.VISIBLE   );
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
 
 
         botaoPedra.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 jogador1.setScaleX(-1f);
                 jogador1.setImageResource(R.drawable.pedra);
-                jogador2.setImageResource(R.drawable.interrogacao);
+                jogada1 =1;
+                sorteiaJogada();
             }
         });
 
@@ -89,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 jogador1.setScaleX(-1f);
                 jogador1.setImageResource(R.drawable.papel);
-                jogador2.setImageResource(R.drawable.interrogacao);
+                jogada1 =2;
+                sorteiaJogada();
             }
         });
 
@@ -98,12 +61,51 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 jogador1.setScaleX(-1f);
                 jogador1.setImageResource(R.drawable.tesoura);
-                jogador2.setImageResource(R.drawable.interrogacao);
+                jogada1 =3;
+                sorteiaJogada();
             }
         });
 
 
 
+    }
+
+    private void sorteiaJogada() {
+
+        Random r = new Random();
+        int num = r.nextInt(3);
+
+        switch (num){
+            case 0:
+                jogador2.setImageResource(R.drawable.pedra);
+                break;
+
+            case 1:
+                jogador2.setImageResource(R.drawable.papel);
+                break;
+
+            case 2:
+                jogador2.setImageResource(R.drawable.tesoura);
+                break;
+        }
+
+        verificaVencedor(num+1);
+
+    }
+
+    private void verificaVencedor(int num) {
+
+        if (num==jogada1){
+            Toast.makeText(this, "Empatou !!!", Toast.LENGTH_SHORT).show();
+        }
+
+        if (num==1 && jogada1==2 ||num==2 && jogada1==3 || num==3 && jogada1==1){
+            Toast.makeText(this, "Vitoria !!!", Toast.LENGTH_SHORT).show();
+        }
+
+        if ( num==1 && jogada1==3 ||num==2 && jogada1==1 || num==3 && jogada1==2){
+            Toast.makeText(this, "Derrota !!!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
